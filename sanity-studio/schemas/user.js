@@ -35,9 +35,9 @@ export default {
               type: 'user',
             },
           ],
-          validation: (Rule) => Rule.unique(),
         },
       ],
+      validation: (Rule) => Rule.unique(),
     },
     {
       title: 'Followers',
@@ -51,9 +51,9 @@ export default {
               type: 'user',
             },
           ],
-          validation: (Rule) => Rule.unique(),
         },
       ],
+      validation: (Rule) => Rule.unique(),
     },
     {
       title: 'Bookmarks',
@@ -67,9 +67,9 @@ export default {
               type: 'post',
             },
           ],
-          validation: (Rule) => Rule.unique(),
         },
       ],
+      validation: (Rule) => Rule.unique(),
     },
   ],
   preview: {
