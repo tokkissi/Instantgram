@@ -81,7 +81,7 @@ export async function getSavedPostsOf(username: string) {
     .fetch(
       `
     *[_type == "post"
-      && _id in *[_type == "user" && username == "${username}".bookmarks[]._ref]]
+      && _id in *[_type == "user" && username == "${username}"].bookmarks[]._ref]
      | order(_createdAt desc){
       ${simplePostProjection}
      }
