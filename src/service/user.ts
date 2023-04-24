@@ -57,7 +57,6 @@ export async function searchUsers(keyword?: string) {
       }))
     );
 }
-
 export async function getUserForProfile(username: string) {
   return client
     .fetch(
@@ -73,8 +72,8 @@ export async function getUserForProfile(username: string) {
     )
     .then((user) => ({
       ...user,
-      following: user?.following ?? 0,
-      followers: user?.followers ?? 0,
-      posts: user?.posts ?? 0,
+      following: user.following ?? 0,
+      followers: user.followers ?? 0,
+      posts: user.posts ?? 0,
     }));
 }
