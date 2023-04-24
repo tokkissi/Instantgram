@@ -1,33 +1,41 @@
-import HeartIcon from "./ui/icons/HeartIcon";
 import BookmarkIcon from "./ui/icons/BookmarkIcon";
+import HeartIcon from "./ui/icons/HeartIcon";
 import { parseDate } from "@/util/date";
 import { useState } from "react";
 import ToggleButton from "./ui/ToggleButton";
 import HeartFillIcon from "./ui/icons/HeartFillIcon";
 import BookmarkFillIcon from "./ui/icons/BookmarkFillIcon";
-
+import { SimplePost } from "@/model/post";
+import { useSession } from "next-auth/react";
+import { useSWRConfig } from "swr";
 type Props = {
-  likes: string[];
-  username: string;
-  createdAt: string;
-  text?: string;
+  post: SimplePost;
 };
-
-export default function ActionBar({ likes, username, text, createdAt }: Props) {
-  const [liked, setLiked] = useState(false);
-  const [bookmaked, setBookmarked] = useState(false);
+export default function ActionBar({ post }: Props) {
+  const { id, likes, username, text, createdAt } = post;
+  const { data: session } = useSession();
+  const user = session?.user;
+  const liked = user ? likes.includes(user.username) : false;
+  const [bookmarked, setBookmarked] = useState(false);
+  const { mutate } = useSWRConfig();
+  const handleLike = (like: boolean) => {
+    fetch("api/likes", {
+      method: "PUT",
+      body: JSON.stringify({ id, like }),
+    }).then(() => mutate("/api/posts"));
+  };
 
   return (
     <>
       <div className="flex justify-between my-2 px-4">
         <ToggleButton
           toggled={liked}
-          onToggle={setLiked}
+          onToggle={handleLike}
           onIcon={<HeartFillIcon />}
           offIcon={<HeartIcon />}
         />
         <ToggleButton
-          toggled={bookmaked}
+          toggled={bookmarked}
           onToggle={setBookmarked}
           onIcon={<BookmarkFillIcon />}
           offIcon={<BookmarkIcon />}
@@ -39,7 +47,7 @@ export default function ActionBar({ likes, username, text, createdAt }: Props) {
         }`}</p>
         {text && (
           <p>
-            <span className="font-bold mr-2">{username}</span>
+            <span className="font-bold mr-1">{username}</span>
             {text}
           </p>
         )}
