@@ -2,7 +2,7 @@ type Props = {
   text: string;
   onClick: () => void;
   red?: boolean;
-  disabled: boolean;
+  disabled?: boolean;
 };
 
 export default function Button({
